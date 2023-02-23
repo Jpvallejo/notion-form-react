@@ -3,14 +3,17 @@ import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 type CurrencyInputProps = {
   value: string;
   handleChange: (a: string) => void;
+  error: boolean;
 };
 export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   value,
   handleChange,
+  error,
 }) => {
   return (
     <CurrencyTextField
-      style={{'width': 250, 'margin-right': 10}}
+      error={error}
+      style={{ width: 250, marginRight: 10 }}
       label="Amount"
       variant="outlined"
       value={value}

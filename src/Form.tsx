@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { FlatSelect } from "./form-components/FlatSelect";
 import MultipleSelect from "./form-components/MultipleSelect";
 import { CurrencyInput } from "./form-components/CurrencyInput";
+import axios from "axios";
 
 const defaultValues = {
   monto: "",
@@ -25,6 +26,13 @@ const defaultValues = {
 export const Form = () => {
   const [data, setData] = useState(defaultValues);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState({
+    tarjeta: false,
+    moneda: false,
+    mes: false,
+    monto: false,
+    concepto: false,
+  });
 
   const handleClose = () => {
     setSubmitted(false);
@@ -32,8 +40,6 @@ export const Form = () => {
 
   useEffect(() => {
     const today = new Date(2000, new Date().getMonth() + 1, 1);
-
-    // Getting full month name (e.g. "June")
     const month = today.toLocaleString("es-ES", { month: "long" });
     const currentMonth = month.charAt(0).toUpperCase() + month.slice(1);
     setData({
@@ -50,6 +56,7 @@ export const Form = () => {
       ...data,
       mes: typeof value === "string" ? value.split(",") : value,
     });
+    setError({ ...error, mes: false });
   };
   const currencyOptions = [
     {
@@ -92,8 +99,33 @@ export const Form = () => {
     "Diciembre",
   ];
   const onSubmit = () => {
-    setSubmitted(true);
-    console.log(data)};
+    if (
+      !data.moneda ||
+      !data.tarjeta ||
+      !data.mes.length ||
+      !data.monto ||
+      !data.concepto
+    ) {
+      setError({
+        moneda: !data.moneda,
+        tarjeta: !data.tarjeta,
+        mes: !data.mes.length,
+        monto: !data.monto,
+        concepto: !data.concepto,
+      });
+      return;
+    } else {
+      axios
+        .post("http://localhost:8500/creditCards/", data)
+        .then(function (response) {
+          setSubmitted(true);
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  };
 
   return (
     <Stack alignItems={"left"} padding={20} spacing={2}>
@@ -101,7 +133,9 @@ export const Form = () => {
 
       <Typography variant="h6">Concepto</Typography>
       <TextField
-        placeholder="Concepto"
+        required={true}
+        error={error.concepto}
+        label="Concepto"
         variant="outlined"
         style={{ width: 250, minHeight: 50 }}
         sx={{
@@ -110,22 +144,29 @@ export const Form = () => {
           },
         }}
         value={data.concepto}
-        onChange={(e) => setData({ ...data, concepto: e.target.value })}
+        onChange={(e) => {
+          setError({ ...error, concepto: false });
+          setData({ ...data, concepto: e.target.value });
+        }}
       />
       <Typography variant="h6">Monto</Typography>
       <Box sx={{ display: "flex" }}>
         <CurrencyInput
           value={data.monto}
+          error={error.monto}
           handleChange={(monto: string) => {
+            setError({ ...error, monto: false });
             setData({ ...data, monto: monto });
           }}
         />
         <FlatSelect
+          hasError={error.moneda}
           options={currencyOptions}
           direction="row"
           style={{}}
           onClick={(newOption) => {
             setData({ ...data, moneda: newOption });
+            setError({ ...error, moneda: false });
           }}
           selectedOption={data.moneda}
         />
@@ -133,17 +174,22 @@ export const Form = () => {
       <Divider />
       <Typography variant="h6">Tarjeta</Typography>
       <FlatSelect
+        hasError={error.tarjeta}
         options={cardOptions}
         style={{ width: 250 }}
         onClick={(newOption) => {
+          setError({ ...error, tarjeta: false });
           setData({ ...data, tarjeta: newOption });
         }}
         selectedOption={data.tarjeta}
       />
+
+      <Typography variant="h6">Mes</Typography>
       <MultipleSelect
         options={monthOptions}
         handleChange={handleChange}
         selected={data.mes}
+        error={error.mes}
       />
 
       <Divider />

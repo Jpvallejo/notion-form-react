@@ -12,6 +12,7 @@ type MultipleSelectProps = {
   options: string[];
   selected: string[];
   handleChange: (event: SelectChangeEvent<string[]>) => void;
+  error: boolean;
 };
 
 const ITEM_HEIGHT = 48;
@@ -40,6 +41,7 @@ export const MultipleSelect: React.FC<MultipleSelectProps> = ({
   options,
   selected,
   handleChange,
+  error,
 }) => {
   const theme = useTheme();
 
@@ -48,6 +50,7 @@ export const MultipleSelect: React.FC<MultipleSelectProps> = ({
       <FormControl sx={{ m: 1, width: 300 }}>
         <InputLabel id="demo-multiple-chip-label">Mes</InputLabel>
         <Select
+          error={error}
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
           multiple

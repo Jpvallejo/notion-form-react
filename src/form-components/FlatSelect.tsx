@@ -1,6 +1,5 @@
 import React from "react";
-import { Button } from "@material-ui/core";
-import { Stack } from "@mui/material";
+import { Stack, Button } from "@mui/material";
 
 type FlatSelectProps = {
   options: { label: string; value: string }[];
@@ -8,6 +7,7 @@ type FlatSelectProps = {
   selectedOption: string;
   style: any;
   direction?: "column" | "row";
+  hasError: boolean;
 };
 
 export const FlatSelect: React.FC<FlatSelectProps> = ({
@@ -16,11 +16,13 @@ export const FlatSelect: React.FC<FlatSelectProps> = ({
   selectedOption,
   style,
   direction = "column",
+  hasError,
 }) => {
   return (
     <Stack spacing={2} direction={direction}>
       {options.map((singleOption) => (
         <Button
+          color={hasError? "error": "primary"}
           onClick={() => {
             onClick(singleOption.value);
           }}
