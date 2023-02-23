@@ -116,7 +116,7 @@ export const Form = () => {
       return;
     } else {
       axios
-        .post("http://localhost:8500/creditCards/", data)
+        .post(process.env.REACT_APP_BASE_URL ?? "", data)
         .then(function (response) {
           setSubmitted(true);
           console.log(response);
