@@ -133,7 +133,7 @@ export const Form = () => {
       <Grid item xs={12}>
         <Typography sx={{ typography: { sm: 'h3', xs: 'h6' } }}> Spendings Tracker 2023 </Typography>
       </Grid>
-      <Grid item>
+      <Grid item xs={12}>
         <Typography variant="h6">Concepto</Typography>
         <TextField
           required={true}
@@ -153,7 +153,7 @@ export const Form = () => {
           }}
         />
       </Grid>
-      <Grid item>
+      <Grid item xs={12}>
         <Typography variant="h6">Monto</Typography>
         <Box sx={{ display: "flex" }}>
           <CurrencyInput
@@ -178,7 +178,7 @@ export const Form = () => {
         </Box>
       </Grid>
       <Divider />
-      <Grid item>
+      <Grid item xs={12}>
         <Typography variant="h6">Tarjeta</Typography>
         <FlatSelect
           hasError={error.tarjeta}
@@ -191,7 +191,7 @@ export const Form = () => {
           selectedOption={data.tarjeta}
         />
       </Grid>
-      <Grid item>
+      <Grid item xs={12}>
         <Typography variant="h6">Mes</Typography>
         <MultipleSelect
           options={monthOptions}
@@ -202,7 +202,7 @@ export const Form = () => {
       </Grid>
       <Divider />
 
-      <Grid item>
+      <Grid item xs={12}>
         <Button onClick={onSubmit} variant={"contained"}>
           Submit
         </Button>
