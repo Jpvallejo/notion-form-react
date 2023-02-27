@@ -8,6 +8,7 @@ import {
   Box,
   Snackbar,
   Alert,
+  Grid,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { FlatSelect } from "./form-components/FlatSelect";
@@ -128,74 +129,84 @@ export const Form = () => {
   };
 
   return (
-    <Stack alignItems={"left"} padding={20} spacing={2}>
-      <Typography variant="h2"> Spendings Tracker 2023 </Typography>
-
-      <Typography variant="h6">Concepto</Typography>
-      <TextField
-        required={true}
-        error={error.concepto}
-        label="Concepto"
-        variant="outlined"
-        style={{ width: 250, minHeight: 50 }}
-        sx={{
-          ".MuiInputBase-input": {
-            padding: "16.5px 14px;",
-          },
-        }}
-        value={data.concepto}
-        onChange={(e) => {
-          setError({ ...error, concepto: false });
-          setData({ ...data, concepto: e.target.value });
-        }}
-      />
-      <Typography variant="h6">Monto</Typography>
-      <Box sx={{ display: "flex" }}>
-        <CurrencyInput
-          value={data.monto}
-          error={error.monto}
-          handleChange={(monto: string) => {
-            setError({ ...error, monto: false });
-            setData({ ...data, monto: monto });
+    <Grid alignItems={"left"} padding={5} container={true} spacing={2}>
+      <Grid item xs={12}>
+        <Typography sx={{ typography: { sm: 'h3', xs: 'h6' } }}> Spendings Tracker 2023 </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="h6">Concepto</Typography>
+        <TextField
+          required={true}
+          error={error.concepto}
+          label="Concepto"
+          variant="outlined"
+          style={{ width: 250, minHeight: 50 }}
+          sx={{
+            ".MuiInputBase-input": {
+              padding: "16.5px 14px;",
+            },
+          }}
+          value={data.concepto}
+          onChange={(e) => {
+            setError({ ...error, concepto: false });
+            setData({ ...data, concepto: e.target.value });
           }}
         />
+      </Grid>
+      <Grid item>
+        <Typography variant="h6">Monto</Typography>
+        <Box sx={{ display: "flex" }}>
+          <CurrencyInput
+            value={data.monto}
+            error={error.monto}
+            handleChange={(monto: string) => {
+              setError({ ...error, monto: false });
+              setData({ ...data, monto: monto });
+            }}
+          />
+          <FlatSelect
+            hasError={error.moneda}
+            options={currencyOptions}
+            direction="row"
+            style={{}}
+            onClick={(newOption) => {
+              setData({ ...data, moneda: newOption });
+              setError({ ...error, moneda: false });
+            }}
+            selectedOption={data.moneda}
+          />
+        </Box>
+      </Grid>
+      <Divider />
+      <Grid item>
+        <Typography variant="h6">Tarjeta</Typography>
         <FlatSelect
-          hasError={error.moneda}
-          options={currencyOptions}
-          direction="row"
-          style={{}}
+          hasError={error.tarjeta}
+          options={cardOptions}
+          style={{ width: 250 }}
           onClick={(newOption) => {
-            setData({ ...data, moneda: newOption });
-            setError({ ...error, moneda: false });
+            setError({ ...error, tarjeta: false });
+            setData({ ...data, tarjeta: newOption });
           }}
-          selectedOption={data.moneda}
+          selectedOption={data.tarjeta}
         />
-      </Box>
+      </Grid>
+      <Grid item>
+        <Typography variant="h6">Mes</Typography>
+        <MultipleSelect
+          options={monthOptions}
+          handleChange={handleChange}
+          selected={data.mes}
+          error={error.mes}
+        />
+      </Grid>
       <Divider />
-      <Typography variant="h6">Tarjeta</Typography>
-      <FlatSelect
-        hasError={error.tarjeta}
-        options={cardOptions}
-        style={{ width: 250 }}
-        onClick={(newOption) => {
-          setError({ ...error, tarjeta: false });
-          setData({ ...data, tarjeta: newOption });
-        }}
-        selectedOption={data.tarjeta}
-      />
 
-      <Typography variant="h6">Mes</Typography>
-      <MultipleSelect
-        options={monthOptions}
-        handleChange={handleChange}
-        selected={data.mes}
-        error={error.mes}
-      />
-
-      <Divider />
-      <Button onClick={onSubmit} variant={"contained"}>
-        Submit
-      </Button>
+      <Grid item>
+        <Button onClick={onSubmit} variant={"contained"}>
+          Submit
+        </Button>
+      </Grid>
       <Snackbar
         open={submitted}
         autoHideDuration={6000}
@@ -206,6 +217,6 @@ export const Form = () => {
           This is a success message!
         </Alert>
       </Snackbar>
-    </Stack>
+    </Grid>
   );
 };

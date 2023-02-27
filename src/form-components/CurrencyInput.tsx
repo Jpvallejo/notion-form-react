@@ -13,7 +13,7 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   return (
     <CurrencyTextField
       error={error}
-      style={{ width: 250, marginRight: 10 }}
+      style={{ maxWidth: 250, marginRight: 10 }}
       label="Amount"
       variant="outlined"
       value={value}
