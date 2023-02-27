@@ -1,5 +1,5 @@
 import React from "react";
-import CurrencyTextField from "@unicef/material-ui-currency-textfield";
+import CurrencyTextField from "../components/CurrencyTextField";
 type CurrencyInputProps = {
   value: string;
   handleChange: (a: string) => void;
