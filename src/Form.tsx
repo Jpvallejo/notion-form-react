@@ -39,14 +39,18 @@ export const Form = () => {
     setSubmitted(false);
   };
 
-  useEffect(() => {
+  const setInitialData = (newData: any) => {
     const today = new Date(2000, new Date().getMonth() + 1, 1);
     const month = today.toLocaleString("es-ES", { month: "long" });
     const currentMonth = month.charAt(0).toUpperCase() + month.slice(1);
     setData({
-      ...data,
+      ...newData,
       mes: [currentMonth],
     });
+  }
+
+  useEffect(() => {
+    setInitialData(data)
   }, []);
 
   const handleChange = (event: SelectChangeEvent<string[]>) => {
@@ -120,7 +124,7 @@ export const Form = () => {
         .post(process.env.REACT_APP_BASE_URL ?? "", data)
         .then(function (response) {
           setSubmitted(true);
-          console.log(response);
+          setInitialData(defaultValues);
         })
         .catch(function (error) {
           console.log(error);
