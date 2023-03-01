@@ -3,11 +3,9 @@ import {
   Typography,
   Divider,
   SelectChangeEvent,
-  Stack,
   TextField,
   Box,
-  Snackbar,
-  Alert,
+  AlertColor,
   Grid,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -15,6 +13,9 @@ import { FlatSelect } from "./form-components/FlatSelect";
 import MultipleSelect from "./form-components/MultipleSelect";
 import { CurrencyInput } from "./form-components/CurrencyInput";
 import axios from "axios";
+import LoadingModal from "./components/LoadingModal";
+import { currencyOptions, monthOptions, cardOptions } from "./consts/formConsts";
+import { Snackbar } from "./components/Snackbar";
 
 const defaultValues = {
   monto: "",
@@ -27,6 +28,9 @@ const defaultValues = {
 export const Form = () => {
   const [data, setData] = useState(defaultValues);
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [severity, setSeverity] = useState("success");
+  const [alertText, setAlertText] = useState("");
   const [error, setError] = useState({
     tarjeta: false,
     moneda: false,
@@ -63,46 +67,6 @@ export const Form = () => {
     });
     setError({ ...error, mes: false });
   };
-  const currencyOptions = [
-    {
-      label: "ARS",
-      value: "ARS",
-    },
-    {
-      label: "USD",
-      value: "USD",
-    },
-  ];
-  const cardOptions = [
-    {
-      label: "VISA HSBC",
-      value: "VISA HSBC",
-    },
-    {
-      label: "MC HSBC",
-      value: "MC HSBC",
-    },
-    {
-      label: "AMEX",
-      value: "AMEX",
-    },
-    {
-      label: "VISA ICBC",
-      value: "VISA ICBC",
-    },
-  ];
-  const monthOptions = [
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
   const onSubmit = () => {
     if (
       !data.moneda ||
@@ -120,14 +84,22 @@ export const Form = () => {
       });
       return;
     } else {
+      setIsLoading(true);
       axios
         .post(process.env.REACT_APP_BASE_URL ?? "", data)
-        .then(function (response) {
-          setSubmitted(true);
+        .then(function (_response: any) {
           setInitialData(defaultValues);
+          setSeverity("success");
+          setAlertText("Gasto cargado correctamente!")
+          setSubmitted(true);
+          setIsLoading(false);
         })
-        .catch(function (error) {
+        .catch(function (error: any) {
           console.log(error);
+          setSeverity("error");
+          setAlertText("There was an error")
+          setSubmitted(true);
+          setIsLoading(false);
         });
     }
   };
@@ -213,14 +185,11 @@ export const Form = () => {
       </Grid>
       <Snackbar
         open={submitted}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message="Note archived"
-      >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          This is a success message!
-        </Alert>
-      </Snackbar>
+        handleClose={handleClose}
+        severity={severity as AlertColor}
+        text={alertText}
+      />
+      <LoadingModal open={isLoading} />
     </Grid>
   );
 };
