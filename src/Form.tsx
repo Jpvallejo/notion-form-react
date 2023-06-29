@@ -86,7 +86,7 @@ export const Form = () => {
     } else {
       setIsLoading(true);
       axios
-        .post(process.env.REACT_APP_BASE_URL ?? "", data)
+        .post(`${process.env.REACT_APP_BASE_URL ?? ""}creditCards/`, data)
         .then(function (_response: any) {
           setInitialData(defaultValues);
           setSeverity("success");
