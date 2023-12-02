@@ -47,7 +47,7 @@ export const Form = () => {
     const now = new Date();
     const today = new Date(now.getFullYear(), new Date().getMonth() + 1, 1);
     const month = today.toLocaleString("es-ES", { month: "long" });
-    const currentMonth = `${month.charAt(0).toUpperCase() + month.slice(1)}-${(now.getFullYear() % 100)}`;
+    const currentMonth = `${month.charAt(0).toUpperCase() + month.slice(1)}-${(today.getFullYear() % 100)}`;
     setData({
       ...newData,
       mes: [currentMonth],
