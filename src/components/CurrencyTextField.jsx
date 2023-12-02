@@ -125,7 +125,6 @@ class CurrencyTextField extends React.Component {
         }}
         inputProps={{
           className: classes.textField,
-          lang: 'es-AR',
           ...inputProps,
         }}
         {...otherProps}
@@ -216,6 +215,7 @@ CurrencyTextField.defaultProps = {
   textAlign: "right",
   maximumValue: "10000000000000",
   minimumValue: "-10000000000000",
+  digitGroupSeparator: ".",
 }
 export default withStyles(styles)(CurrencyTextField)
 
