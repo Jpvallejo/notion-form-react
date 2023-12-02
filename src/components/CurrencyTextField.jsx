@@ -125,6 +125,7 @@ class CurrencyTextField extends React.Component {
         }}
         inputProps={{
           className: classes.textField,
+          lang: 'es-AR',
           ...inputProps,
         }}
         {...otherProps}

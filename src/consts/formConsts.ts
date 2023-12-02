@@ -25,15 +25,12 @@ export const cardOptions = [
         label: "VISA ICBC",
         value: "VISA ICBC",
     },
+    {
+        label: "MC PATA",
+        value: "MC PATA",
+    },
 ];
 export const monthOptions = [
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
     "Enero-24",
     "Febrero-24",
     "Marzo-24",
