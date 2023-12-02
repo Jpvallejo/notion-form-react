@@ -19,6 +19,7 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
       value={value}
       currencySymbol="$"
       outputFormat="string"
+      decimalCharacterAlternative=","
       onChange={(_event: any, value: string) => handleChange(value)}
     />
   );
