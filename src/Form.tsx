@@ -7,6 +7,7 @@ import {
   Box,
   AlertColor,
   Grid,
+  Select,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { FlatSelect } from "./form-components/FlatSelect";
@@ -14,7 +15,7 @@ import MultipleSelect from "./form-components/MultipleSelect";
 import { CurrencyInput } from "./form-components/CurrencyInput";
 import axios from "axios";
 import LoadingModal from "./components/LoadingModal";
-import { currencyOptions, monthOptions, cardOptions } from "./consts/formConsts";
+import { currencyOptions, monthOptions, cardOptions, categoryOptions } from "./consts/formConsts";
 import { Snackbar } from "./components/Snackbar";
 
 const defaultValues = {
@@ -23,6 +24,7 @@ const defaultValues = {
   mes: [] as string[],
   tarjeta: "",
   moneda: "ARS",
+  categoria: "Otros"
 };
 
 export const Form = () => {
@@ -37,6 +39,7 @@ export const Form = () => {
     mes: false,
     monto: false,
     concepto: false,
+    categoria: false,
   });
 
   const handleClose = () => {
@@ -74,7 +77,8 @@ export const Form = () => {
       !data.tarjeta ||
       !data.mes.length ||
       !data.monto ||
-      !data.concepto
+      !data.concepto ||
+      !data.categoria
     ) {
       setError({
         moneda: !data.moneda,
@@ -82,6 +86,7 @@ export const Form = () => {
         mes: !data.mes.length,
         monto: !data.monto,
         concepto: !data.concepto,
+        categoria: !data.categoria,
       });
       return;
     } else {
@@ -175,6 +180,21 @@ export const Form = () => {
           handleChange={handleChange}
           selected={data.mes}
           error={error.mes}
+        />
+      </Grid>
+      <Divider />
+
+      <Grid item xs={12}>
+        <Typography variant="h6">Categoria</Typography>
+        <FlatSelect
+          style={{ width: 250 }}
+          options={categoryOptions.map((x) => ({ label: x, value: x }))}
+          onClick={(newOption) => {
+            setError({ ...error, categoria: false });
+            setData({ ...data, categoria: newOption });
+          }}
+          selectedOption={data.categoria}
+          hasError={error.categoria}
         />
       </Grid>
       <Divider />

@@ -44,3 +44,11 @@ export const monthOptions = [
     "Noviembre-24",
     "Diciembre-24",
 ];
+export const categoryOptions = [
+    "Otros",
+    "Salidas",
+    "Farmacia",
+    "Supermercado",
+    "Delivery",
+    "Servicios"
+]
